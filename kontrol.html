@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengaturan Kontrol</title>
+</head>
+<body>
+    <h2>Pengaturan Kontrol</h2>
+
+    <form id="kontrolForm">
+        <label for="status_jemuran">Status Jemuran:</label>
+        <select id="status_jemuran" name="status_jemuran">
+            <option value="terbuka">Terbuka</option>
+            <option value="tertutup">Tertutup</option>
+        </select><br>
+
+        <label for="status_cuaca">Status Cuaca:</label>
+        <select id="status_cuaca" name="status_cuaca">
+            <option value="Mendung">Mendung</option>
+            <option value="Hujan">Hujan</option>
+            <option value="Terang">Terang</option>
+        </select><br>
+
+        <label for="suhu_udara">Suhu Udara:</label>
+        <input type="range" id="suhu_udara" name="suhu_udara" min="20" max="35" value="25">
+        <span id="suhu_value">25°C</span><br>
+
+        <label for="kelembaban">Kelembaban:</label>
+        <input type="range" id="kelembaban" name="kelembaban" min="0" max="100" value="75">
+        <span id="kelembaban_value">75%</span><br>
+
+        <label for="kontrol">Kontrol:</label>
+        <select id="kontrol" name="kontrol">
+            <option value="manual">Manual</option>
+            <option value="otomatis">Otomatis</option>
+        </select><br><br>
+
+        <button type="button" onclick="submitForm()">Simpan Pengaturan</button>
+    </form>
+
+    <script>
+        // Update slider values dynamically
+        document.getElementById("suhu_udara").oninput = function() {
+            document.getElementById("suhu_value").textContent = this.value + "°C";
+        };
+        document.getElementById("kelembaban").oninput = function() {
+            document.getElementById("kelembaban_value").textContent = this.value + "%";
+        };
+
+        // Submit form to backend using fetch
+        function submitForm() {
+            const formData = new FormData(document.getElementById('kontrolForm'));
+
+            fetch('feature/kontrol.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Pengaturan berhasil diperbarui');
+                } else {
+                    alert('Gagal memperbarui pengaturan: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Berhasil Diupdate');
+            });
+        }
+    </script>
+</body>
+</html>

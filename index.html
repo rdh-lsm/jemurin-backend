@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Status Jemuran</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="status-card">
+            <h2 id="status_jemuran">Status Jemuran: <span>Loading...</span></h2>
+        </div>
+
+        <div class="info-container">
+            <div class="info-box">
+                <h3 id="status_cuaca">Perkiraan Cuaca: <span>Loading...</span></h3>
+            </div>
+            <div class="info-box">
+                <h3 id="suhu_udara">Suhu Udara: <span>Loading...</span></h3>
+            </div>
+            <div class="info-box">
+                <h3 id="kelembaban">Kelembaban: <span>Loading...</span></h3>
+            </div>
+        </div>
+
+        <div class="control-container">
+            <h3 id="kontrol">Kontrol Otomatis: <span>Loading...</span></h3>
+        </div>
+    </div>
+
+    <script>
+        // Fetch data dari backend PHP
+        fetch('http://localhost/jemuran-otomatis/beken/fetch/fetch_browser.php')
+            .then(response => response.json())
+            .then(data => {
+                // Menampilkan data ke HTML
+                if (data.error) {
+                    alert(data.error);
+                } else {
+                    document.getElementById('status_jemuran').innerHTML = "Status Jemuran: " + data.status_jemuran;
+                    document.getElementById('status_cuaca').innerHTML = "Perkiraan Cuaca: " + data.status_cuaca;
+                    document.getElementById('suhu_udara').innerHTML = "Suhu Udara: " + data.suhu_udara + "°C";
+                    document.getElementById('kelembaban').innerHTML = "Kelembaban: " + data.kelembaban + "%";
+                    document.getElementById('kontrol').innerHTML = "Kontrol Otomatis: " + data.kontrol;
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+    </script>
+</body>
+</html>
